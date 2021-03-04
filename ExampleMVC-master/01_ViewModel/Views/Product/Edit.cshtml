@@ -1,0 +1,157 @@
+﻿@model  EditProductViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+    string action = Model.Product == null ? "/Product/New" : "/Product/Edit";
+}
+
+<div class="container">
+
+    <div>
+        <div class="alert alert-warning" role="alert">
+            formun amacı ilgili actiona request gondermek.( Browserın url cubugu gibi.)
+        </div>
+
+        <div class="alert alert-warning" role="alert">
+
+
+            Formun içinde bulunan type=sumbit olan button fomun request atma işlemini başlatır.
+        </div>
+        <div class="alert alert-warning" role="alert">
+
+            Browserda url le birşey yazıp enter basmak (benzer) sumbıt buttonla formun ilgili actiona request atması
+
+        </div>
+        ---Formu submit etmek----
+    </div>
+
+    <h3>@ViewBag.title</h3>
+    <form method="post" action="@action">
+        @if (Model.Product != null)
+        {
+            //23  --->38
+            <input name="Id" type="hidden" value="@Model.Product.Id" />
+        }
+        <div>
+            <label>
+                Id:
+            </label>
+            @if (Model.Product != null)
+            {
+                <input type="text" disabled value="@Model.Product.Id" />
+            }
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label for="CategoryID">Kategori</label>
+            <select id="CategoryID" name="CategoryID" class="form-control">
+                @foreach (var item in Model.AllCategories)
+                {
+                    if (Model.Product != null)
+                    {
+                        <option @(Model.Product.CategoryID == item.ID ? "selected" : "") value="@item.ID">@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.ID">@item.Name</option>
+
+                    }
+                }
+
+            </select>
+        </div>
+        <div class="form-group">
+
+
+            @foreach (var item in (List<_01_ViewModel.Data.Patlangac>)ViewData["Patlangacs"])
+            {
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        @if (Model.Product == null)
+                        {
+                            <input class="form-check-input" name="PatlangacValue" value="@item.Id" type="checkbox" />
+                        }
+                        else
+                        {
+                            string isSelected = Model.Product.Patlangacs.Any(t => t.Id == item.Id) ? "checked" : "";
+
+                            <input class="form-check-input" @isSelected name="PatlangacValue" value="@item.Id" type="checkbox" />
+                        }
+
+                        @item.Name
+                    </label>
+                </div>
+
+
+
+            }
+
+        </div>
+        <div class="form-group">
+            <label for="Name">
+                Ad:
+            </label>
+            @if (Model.Product != null)
+            {
+                <input class="form-control" id="Name" name="Name" type="text" value="@Model.Product.Name" />
+            }
+            else
+            {
+                <input class="form-control" id="Name" name="Name" type="text" />
+
+
+            }
+        </div>
+        <div class="form-group">
+            <label for="Desription">
+                Acıklama:
+            </label>
+            @if (Model.Product != null)
+            {
+                <textarea id="Desription" class="form-control" name="Desription">@Model.Product.Desription</textarea>
+            }
+            else
+            {
+                <textarea class="form-control" name="Desription"></textarea>
+
+
+            }
+        </div>
+        <div class="form-group">
+            <label for="Price">
+                Fiyat:
+            </label>
+            @if (Model.Product != null)
+            {
+                <input class="form-control" id="Price" name="Price" type="text" value="@Model.Product.Price" />
+            }
+            else
+            {
+                <input class="form-control" id="Price" name="Price" type="text" />
+
+
+            }
+        </div>
+        <div>
+            @if (Model.Product != null)
+            {
+                <input class="btn btn-primary" type="submit" value="Güncelle" />
+            }
+            else
+            {
+                <input class="btn btn-primary" type="submit" value="Ekle" />
+            }
+
+        </div>
+
+    </form>
+
+
+</div>
